@@ -1,0 +1,42 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page auth">
+        <h1>${title}</h1>
+        <p class="muted">Creating a <strong>${role}</strong> account.</p>
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form method="post" action="/auth/register" class="form">
+          <input type="hidden" name="role" value="${role}" />
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" required value="${form?.email ? String(form.email).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input name="password" type="password" required minlength="6" />
+          </label>
+          ${
+            role === "intern"
+              ? `
+                <label class="field">
+                  <span>Full name</span>
+                  <input name="fullName" type="text" required value="${form?.fullName ? String(form.fullName).replaceAll('"', "&quot;") : ""}" />
+                </label>
+              `
+              : `
+                <label class="field">
+                  <span>Company name</span>
+                  <input name="companyName" type="text" required value="${form?.companyName ? String(form.companyName).replaceAll('"', "&quot;") : ""}" />
+                </label>
+              `
+          }
+          <button class="button" type="submit">Create account</button>
+        </form>
+        <p class="muted"><a href="/auth/login">Already have an account? Log in</a></p>
+      </section>
+    `,
+  })
+%>
+

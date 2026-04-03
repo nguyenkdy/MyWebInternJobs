@@ -1,0 +1,17 @@
+<%-
+  include("layout", {
+    title: "Welcome",
+    currentUser,
+    body: `
+      <section class="hero">
+        <h1 class="hero__title">Find the right internship</h1>
+        <p class="hero__subtitle">Browse internship jobs and apply in one click. Companies can post roles and review applications.</p>
+        <div class="hero__cta">
+          <a class="button" href="/jobs">Browse jobs</a>
+          <a class="button button--ghost" href="/company/dashboard">Company dashboard</a>
+        </div>
+      </section>
+    `,
+  })
+%>
+

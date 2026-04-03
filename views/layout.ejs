@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header__inner">
+        <a class="brand" href="/">InternJobs</a>
+        <nav class="nav">
+          <a class="nav__link" href="/jobs">Find jobs</a>
+          <% if (currentUser?.role === "company") { %>
+            <a class="nav__link" href="/company/dashboard">Company</a>
+            <a class="nav__link" href="/company/profile">Profile</a>
+            <a class="nav__link" href="/interns">Find interns</a>
+          <% } %>
+          <% if (currentUser?.role === "intern") { %>
+            <a class="nav__link" href="/profile">Profile</a>
+            <a class="nav__link" href="/companies">Find companies</a>
+          <% } %>
+          <% if (!currentUser) { %>
+            <a class="nav__link" href="/auth/login">Log in</a>
+            <a class="nav__link" href="/auth/register?role=intern">Sign up (Intern)</a>
+            <a class="nav__link" href="/auth/register?role=company">Sign up (Company)</a>
+          <% } else { %>
+            <span class="nav__chip">
+              <%= currentUser.role === "company" ? (currentUser.companyName || currentUser.email) : (currentUser.fullName || currentUser.email) %>
+            </span>
+            <form method="post" action="/auth/logout">
+              <button class="nav__button" type="submit">Logout</button>
+            </form>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <%- body %>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <span>MongoDB Atlas + Node.js</span>
+      </div>
+    </footer>
+  </body>
+</html>
+

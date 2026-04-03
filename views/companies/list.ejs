@@ -1,0 +1,48 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <h1>Companies</h1>
+        <form class="filters" method="get" action="/companies">
+          <input class="input" name="q" placeholder="Search company name, about, website" value="${q ? String(q).replaceAll('"', "&quot;") : ""}" />
+          <span class="muted" style="align-self:center;">Browse</span>
+          <button class="button" type="submit">Search</button>
+        </form>
+
+        <div class="jobs">
+          ${
+            companies.length
+              ? companies
+                  .map(
+                    (c) => `
+                      <a class="job" href="/companies/${c._id}" style="text-decoration:none;">
+                        <div class="job__top">
+                          <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; border-radius:12px; overflow:hidden; border:1px solid var(--border); background: rgba(0,0,0,0.2); flex: 0 0 auto;">
+                              ${
+                                c.avatar
+                                  ? `<img src="${c.avatar}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; display:block;" />`
+                                  : `<div style="width:100%; height:100%; display:grid; place-items:center; font-weight:800;">${(c.companyName || "?").slice(0, 1).toUpperCase()}</div>`
+                              }
+                            </div>
+                            <div class="job__title">${c.companyName || "Company"}</div>
+                          </div>
+                          <span class="badge">company</span>
+                        </div>
+                        <div class="job__meta">
+                          <span>${c.companyWebsite ? "Website available" : "No website"}</span>
+                        </div>
+                      </a>
+                    `
+                  )
+                  .join("")
+              : `<div class="muted">No companies found.</div>`
+          }
+        </div>
+      </section>
+    `,
+  })
+%>
+

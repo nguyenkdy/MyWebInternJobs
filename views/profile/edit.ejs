@@ -1,0 +1,93 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <h1>Edit Profile</h1>
+        <p class="muted">Update your professional profile.</p>
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form class="form" method="post" action="/profile" enctype="multipart/form-data">
+          <label class="field">
+            <span>Full Name</span>
+            <input name="fullName" required value="${form?.fullName ? String(form.fullName).replaceAll('"', "&quot;") : ""}" />
+          </label>
+
+          <label class="field">
+            <span>Profile Picture (Avatar)</span>
+            <input name="avatar" type="file" accept="image/*" ${form?.avatar ? "" : "required"} />
+            ${
+              form?.avatar
+                ? `<div style="display:flex; align-items:center; gap:12px;">
+                    <img src="${String(form.avatar).replaceAll('"', "&quot;")}" alt="Avatar preview" style="width:64px; height:64px; border-radius:16px; object-fit:cover; border:1px solid rgba(255,255,255,0.14);" />
+                    <div class="muted">Uploaded to AWS S3</div>
+                  </div>`
+                : `<div class="muted">Upload an avatar image (required)</div>`
+            }
+          </label>
+
+          <label class="field">
+            <span>Cover Photo</span>
+            <input name="coverPhoto" type="file" accept="image/*" />
+            ${
+              form?.coverPhoto
+                ? `<div style="display:flex; align-items:center; gap:12px;">
+                    <img src="${String(form.coverPhoto).replaceAll('"', "&quot;")}" alt="Cover preview" style="width:140px; height:56px; object-fit:cover; border:1px solid rgba(255,255,255,0.14); border-radius:12px;" />
+                    <div class="muted">Optional, stored in AWS S3</div>
+                  </div>`
+                : `<div class="muted">Optional</div>`
+            }
+          </label>
+
+          <label class="field">
+            <span>About Me (Professional Bio)</span>
+            <textarea name="aboutMe" rows="4" placeholder="Tell employers about yourself and your career aspirations...">${form?.aboutMe ? String(form.aboutMe) : ""}</textarea>
+          </label>
+
+          <label class="field">
+            <span>University/College</span>
+            <input name="university" placeholder="e.g., University of Technology" value="${form?.university ? String(form.university).replaceAll('"', "&quot;") : ""}" />
+          </label>
+
+          <label class="field">
+            <span>Major</span>
+            <input name="major" placeholder="e.g., Computer Science" value="${form?.major ? String(form.major).replaceAll('"', "&quot;") : ""}" />
+          </label>
+
+          <label class="field">
+            <span>Expected Graduation Year</span>
+            <input name="graduationYear" type="number" min="2020" max="2030" placeholder="2026" value="${form?.graduationYear || ""}" />
+          </label>
+
+          <label class="field">
+            <span>Skills & Expertise</span>
+            <input name="skills" placeholder="JavaScript, React, Node.js, Communication" value="${form?.skills ? String(form.skills.join(', ')).replaceAll('"', "&quot;") : ""}" />
+            <small class="muted">Separate skills with commas</small>
+          </label>
+
+          <label class="field">
+            <span>Experience</span>
+            <textarea name="experience" rows="6" placeholder="Current internship tasks or previous projects...
+- Developed a React web app for task management
+- Built REST API with Node.js and Express
+- Collaborated on team project using Git">${form?.experience ? String(form.experience.join('\n')).replaceAll('"', "&quot;") : ""}</textarea>
+            <small class="muted">One experience per line</small>
+          </label>
+
+          <label class="field">
+            <span>Projects</span>
+            <textarea name="projects" rows="6" placeholder="- Portfolio website (React, Tailwind)
+- Chat app (Node.js, Socket.io)
+- API service (Express, MongoDB)">${form?.projects ? String(form.projects.join('\n')).replaceAll('"', "&quot;") : ""}</textarea>
+            <small class="muted">One project per line</small>
+          </label>
+
+          <div class="row row--gap">
+            <button class="button" type="submit">Save Profile</button>
+            <a class="button button--ghost" href="/profile">Cancel</a>
+          </div>
+        </form>
+      </section>
+    `,
+  })
+%>

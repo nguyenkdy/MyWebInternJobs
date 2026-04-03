@@ -1,0 +1,30 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page auth">
+        <h1>${title}</h1>
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form method="post" action="/auth/login" class="form">
+          <label class="field">
+            <span>Email</span>
+            <input name="email" type="email" required value="${form?.email ? String(form.email).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input name="password" type="password" required />
+          </label>
+          <button class="button" type="submit">Log in</button>
+        </form>
+        <p class="muted">
+          New here?
+          <a href="/auth/register?role=intern">Sign up as Intern</a>
+          or
+          <a href="/auth/register?role=company">Sign up as Company</a>
+        </p>
+      </section>
+    `,
+  })
+%>
+

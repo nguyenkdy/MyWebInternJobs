@@ -1,0 +1,103 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <div class="row row--between">
+          <div>
+            <h1>Edit job</h1>
+            <p class="muted">Update the job details. This affects what interns see.</p>
+          </div>
+          <a class="button button--ghost" href="/company/dashboard">Back</a>
+        </div>
+
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form class="form" method="post" action="/company/jobs/${form._id}">
+          <label class="field">
+            <span>Job title</span>
+            <input name="title" required value="${form?.title ? String(form.title).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Location</span>
+            <input name="location" placeholder="Ho Chi Minh City / Remote" value="${form?.location ? String(form.location).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Type</span>
+            <select class="input" name="type">
+              <option value="internship" ${form?.type === "internship" ? "selected" : ""}>Internship</option>
+              <option value="part-time" ${form?.type === "part-time" ? "selected" : ""}>Part-time</option>
+              <option value="full-time" ${form?.type === "full-time" ? "selected" : ""}>Full-time</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Description</span>
+            <textarea name="description" rows="6" required placeholder="What will the intern do?">${form?.description ? String(form.description) : ""}</textarea>
+          </label>
+          <label class="field">
+            <span>Requirements (optional)</span>
+            <textarea name="requirements" rows="4" placeholder="Skills, tech stack, etc.">${form?.requirements ? String(form.requirements) : ""}</textarea>
+          </label>
+          <label class="field">
+            <span>Salary range (optional)</span>
+            <input name="salaryRange" placeholder="$200 - $400 / month" value="${form?.salaryRange ? String(form.salaryRange).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <div class="row row--gap">
+            <button class="button" type="submit">Save changes</button>
+            <form method="post" action="/company/jobs/${form._id}/delete" onsubmit="return confirm('Delete this job? This will also delete its applications.');">
+              <button class="button button--ghost" type="submit" style="color:#d32f2f;">Delete</button>
+            </form>
+          </div>
+        </form>
+      </section>
+    `,
+  })
+%>
+
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <h1>Edit job</h1>
+        <p class="muted">Update the job details.</p>
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form class="form" method="post" action="/company/jobs/${form?._id}">
+          <label class="field">
+            <span>Job title</span>
+            <input name="title" required value="${form?.title ? String(form.title).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Location</span>
+            <input name="location" placeholder="Ho Chi Minh City / Remote" value="${form?.location ? String(form.location).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Type</span>
+            <select class="input" name="type">
+              <option value="internship" ${form?.type === "internship" || !form?.type ? "selected" : ""}>Internship</option>
+              <option value="part-time" ${form?.type === "part-time" ? "selected" : ""}>Part-time</option>
+              <option value="full-time" ${form?.type === "full-time" ? "selected" : ""}>Full-time</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Description</span>
+            <textarea name="description" rows="6" required placeholder="What will the intern do?">${form?.description ? String(form.description) : ""}</textarea>
+          </label>
+          <label class="field">
+            <span>Requirements (optional)</span>
+            <textarea name="requirements" rows="4" placeholder="Skills, tech stack, etc.">${form?.requirements ? String(form.requirements) : ""}</textarea>
+          </label>
+          <label class="field">
+            <span>Salary range (optional)</span>
+            <input name="salaryRange" placeholder="$200 - $400 / month" value="${form?.salaryRange ? String(form.salaryRange).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <div class="row row--gap">
+            <button class="button" type="submit">Save changes</button>
+            <a class="button button--ghost" href="/company/dashboard">Cancel</a>
+          </div>
+        </form>
+      </section>
+    `,
+  })
+%>

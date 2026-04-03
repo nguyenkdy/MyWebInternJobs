@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="welcome-body">
+    <div class="welcome-container">
+      <div class="welcome-card">
+        <h1 class="welcome-title">Welcome to InternJobs</h1>
+        <p class="welcome-subtitle">Find the right internship or post opportunities</p>
+        <% if (error) { %>
+          <div class="alert"><%= error %></div>
+        <% } %>
+        <form method="post" action="/auth/login" class="welcome-form">
+          <label class="welcome-field">
+            <span>Email</span>
+            <input name="email" type="email" required value="<%= form?.email ? String(form.email).replaceAll('"', '&quot;') : '' %>" />
+          </label>
+          <label class="welcome-field">
+            <span>Password</span>
+            <input name="password" type="password" required />
+          </label>
+          <button class="welcome-button" type="submit">Log in</button>
+        </form>
+        <p class="welcome-muted">
+          New here?
+          <a href="/auth/register?role=intern">Sign up as Intern</a>
+          or
+          <a href="/auth/register?role=company">Sign up as Company</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

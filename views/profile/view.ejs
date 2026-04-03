@@ -1,0 +1,79 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="profile">
+        <div class="profileHeader">
+          <div class="profileHeader__cover" style="${user.coverPhoto ? 'background-image:url(\'' + String(user.coverPhoto).replaceAll("'", "%27") + '\')' : ""}"></div>
+          <div class="profileHeader__inner">
+            <div class="profileHeader__avatar">
+              ${
+                user.avatar
+                  ? '<img src="' + user.avatar + '" alt="Avatar" />'
+                  : '<div class="profileHeader__avatarFallback">' + (user.fullName || user.email || "?").slice(0, 1).toUpperCase() + '</div>'
+              }
+            </div>
+            <div class="profileHeader__meta">
+              <h1 class="profileHeader__name">${user.fullName || user.email}</h1>
+              <div class="muted">
+                ${user.university ? user.university : "Add your education"}
+                ${user.major ? ' • ' + user.major : ""}
+                ${user.graduationYear ? ' • Class of ' + user.graduationYear : ""}
+              </div>
+            </div>
+            <div class="profileHeader__actions">
+              <% if (currentUser?.role === "intern" && String(currentUser.id) === String(user._id)) { %>
+                <a class="button" href="/profile/edit">Edit profile</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="profileGrid">
+          <div class="card card--pad">
+            <h2>About me</h2>
+            <p class="pre">${user.aboutMe ? user.aboutMe : "Add a short summary about you, what you’re looking for, and what you’re good at."}</p>
+          </div>
+
+          <div class="card card--pad">
+            <h2>Education</h2>
+            <div class="muted">
+              <div><strong>${user.university || "University/College"}</strong></div>
+              <div>${user.major || "Major"}</div>
+              <div>${user.graduationYear ? 'Expected graduation: ' + user.graduationYear : "Expected graduation year"}</div>
+            </div>
+          </div>
+
+          <div class="card card--pad">
+            <h2>Skills & expertise</h2>
+            ${
+              user.skills?.length
+                ? '<div class="chips">' + user.skills.map((s) => '<span class="chip">' + s + '</span>').join("") + '</div>'
+                : '<div class="muted">Add your skills (comma-separated) in Edit profile.</div>'
+            }
+          </div>
+
+          <div class="card card--pad">
+            <h2>Experience</h2>
+            ${
+              user.experience?.length
+                ? '<ul class="list">' + user.experience.map((e) => '<li>' + e + '</li>').join("") + '</ul>'
+                : '<div class="muted">Add experience items in Edit profile (one per line).</div>'
+            }
+          </div>
+
+          <div class="card card--pad">
+            <h2>Projects</h2>
+            ${
+              user.projects?.length
+                ? '<ul class="list">' + user.projects.map((p) => '<li>' + p + '</li>').join("") + '</ul>'
+                : '<div class="muted">Add projects in Edit profile (one per line).</div>'
+            }
+          </div>
+        </div>
+      </section>
+    `,
+  })
+%>
+
