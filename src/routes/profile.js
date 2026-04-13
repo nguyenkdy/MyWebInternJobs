@@ -25,11 +25,21 @@ const avatarUpload = multer({
 });
 
 async function attachS3Urls(user) {
-  if (user.avatarS3Key) user.avatar = await getImageUrlFromS3(user.avatarS3Key);
-  else user.avatar = null;
+  try {
+    if (user.avatarS3Key) user.avatar = await getImageUrlFromS3(user.avatarS3Key);
+    else user.avatar = null;
+  } catch (err) {
+    console.error("Failed to get avatar URL:", err);
+    user.avatar = null;
+  }
 
-  if (user.coverPhotoS3Key) user.coverPhoto = await getImageUrlFromS3(user.coverPhotoS3Key);
-  else user.coverPhoto = null;
+  try {
+    if (user.coverPhotoS3Key) user.coverPhoto = await getImageUrlFromS3(user.coverPhotoS3Key);
+    else user.coverPhoto = null;
+  } catch (err) {
+    console.error("Failed to get cover photo URL:", err);
+    user.coverPhoto = null;
+  }
   return user;
 }
 
@@ -91,7 +101,7 @@ router.post("/", requireRole("intern"), avatarUpload.fields([{ name: "avatar", m
   user.experience = experience;
   user.projects = projects;
 
-  // Avatar upload is required (per your requirement).
+  // Avatar is optional for updates
   if (avatarFile) {
     const newKey = buildS3Key({
       userId: String(user._id),
@@ -116,12 +126,6 @@ router.post("/", requireRole("intern"), avatarUpload.fields([{ name: "avatar", m
 
     user.avatarS3Key = newKey;
     if (uploaded.url) user.avatar = uploaded.url;
-  } else {
-    // Enforce: avatar must come from S3 (avatarS3Key must exist).
-    if (!user.avatarS3Key) {
-      const form = await attachS3Urls({ ...user.toObject(), fullName });
-      return res.status(400).render("profile/edit", { title: "Edit Profile", error: "Avatar upload is required.", form });
-    }
   }
 
   // Cover photo is optional.

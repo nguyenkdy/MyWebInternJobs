@@ -15,14 +15,14 @@
 
           <label class="field">
             <span>Profile Picture (Avatar)</span>
-            <input name="avatar" type="file" accept="image/*" ${form?.avatar ? "" : "required"} />
+            <input name="avatar" type="file" accept="image/*" />
             ${
               form?.avatar
                 ? `<div style="display:flex; align-items:center; gap:12px;">
                     <img src="${String(form.avatar).replaceAll('"', "&quot;")}" alt="Avatar preview" style="width:64px; height:64px; border-radius:16px; object-fit:cover; border:1px solid rgba(255,255,255,0.14);" />
                     <div class="muted">Uploaded to AWS S3</div>
                   </div>`
-                : `<div class="muted">Upload an avatar image (required)</div>`
+                : `<div class="muted">Optional</div>`
             }
           </label>
 

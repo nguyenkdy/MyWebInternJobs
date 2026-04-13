@@ -23,9 +23,7 @@
               </div>
             </div>
             <div class="profileHeader__actions">
-              <% if (currentUser?.role === "intern" && String(currentUser.id) === String(user._id)) { %>
-                <a class="button" href="/profile/edit">Edit profile</a>
-              <% } %>
+              ${ currentUser?.role === "intern" && String(currentUser.id) === String(user._id) ? '<a class="button" href="/profile/edit">Edit profile</a>' : '' }
             </div>
           </div>
         </div>

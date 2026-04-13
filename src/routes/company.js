@@ -26,11 +26,21 @@ const avatarUpload = multer({
 });
 
 async function attachS3Urls(user) {
-  if (user.avatarS3Key) user.avatar = await getImageUrlFromS3(user.avatarS3Key);
-  else user.avatar = null;
+  try {
+    if (user.avatarS3Key) user.avatar = await getImageUrlFromS3(user.avatarS3Key);
+    else user.avatar = null;
+  } catch (err) {
+    console.error("Failed to get avatar URL:", err);
+    user.avatar = null;
+  }
 
-  if (user.coverPhotoS3Key) user.coverPhoto = await getImageUrlFromS3(user.coverPhotoS3Key);
-  else user.coverPhoto = null;
+  try {
+    if (user.coverPhotoS3Key) user.coverPhoto = await getImageUrlFromS3(user.coverPhotoS3Key);
+    else user.coverPhoto = null;
+  } catch (err) {
+    console.error("Failed to get cover photo URL:", err);
+    user.coverPhoto = null;
+  }
 
   return user;
 }

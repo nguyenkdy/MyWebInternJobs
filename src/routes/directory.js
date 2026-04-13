@@ -9,8 +9,18 @@ const router = express.Router();
 
 async function hydrateAvatarAndCover(user) {
   const hydrated = { ...user };
-  hydrated.avatar = user.avatarS3Key ? await getImageUrlFromS3(user.avatarS3Key) : null;
-  hydrated.coverPhoto = user.coverPhotoS3Key ? await getImageUrlFromS3(user.coverPhotoS3Key) : null;
+  try {
+    hydrated.avatar = user.avatarS3Key ? await getImageUrlFromS3(user.avatarS3Key) : null;
+  } catch (err) {
+    console.error("Failed to get avatar URL:", err);
+    hydrated.avatar = null;
+  }
+  try {
+    hydrated.coverPhoto = user.coverPhotoS3Key ? await getImageUrlFromS3(user.coverPhotoS3Key) : null;
+  } catch (err) {
+    console.error("Failed to get cover photo URL:", err);
+    hydrated.coverPhoto = null;
+  }
   return hydrated;
 }
 
