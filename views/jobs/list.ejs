@@ -22,7 +22,7 @@
               ? jobs
                   .map(
                     (j) => `
-                      <a class="job" href="/jobs/${j._id}">
+                      <div class="job job--static">
                         <div class="job__top">
                           <div class="job__title">${j.title}</div>
                           <span class="badge">${j.type}</span>
@@ -34,7 +34,10 @@
                           <span class="dot">•</span>
                           <span>${j.location || "Remote / Flexible"}</span>
                         </div>
-                      </a>
+                        <div class="row row--gap" style="margin-top: 10px;">
+                          <a class="button button--ghost" href="/jobs/${j._id}">View Details</a>
+                        </div>
+                      </div>
                     `
                   )
                   .join("")
