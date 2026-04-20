@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myweb-config
+data:
+  PORT: "3000"
+  AWS_REGION: "ap-southeast-1"
+  S3_BUCKET_NAME: "amzn-s3-avatar-bucket-v0"
+  S3_PUBLIC: "false"
+  S3_PUBLIC_URL_BASE: ""
+  S3_SIGNED_EXPIRES_SECONDS: "3600"

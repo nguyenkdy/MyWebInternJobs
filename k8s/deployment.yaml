@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myweb
+  template:
+    metadata:
+      labels:
+        app: myweb
+    spec:
+      containers:
+      - name: myweb-container
+        image: khanhduy05/myweb:latest
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: myweb-config
+        - secretRef:
+            name: myweb-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myweb-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: myweb
