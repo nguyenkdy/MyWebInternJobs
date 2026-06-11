@@ -1,0 +1,53 @@
+<%-
+  include("layout", {
+    title: "Welcome",
+    currentUser,
+    body: `
+      <section class="hero">
+        <h1 class="hero__title">Find the right internship</h1>
+        <p class="hero__subtitle">Browse internship jobs, discover talent, and share updates across the community.</p>
+        <div class="hero__cta">
+          <a class="button" href="/jobs">Browse jobs</a>
+          <a class="button button--ghost" href="/feed">Go to feed</a>
+        </div>
+      </section>
+      ${
+        latestPosts?.length
+          ? `
+              <section class="page__section">
+                <h2>Latest community posts</h2>
+                <div class="grid">
+                  ${latestPosts
+                    .map(
+                      (post) => `
+                        <div class="card post-card">
+                          <div class="post-card__head">
+                            <div class="post-card__author">
+                              <div class="post-card__avatar">
+                                ${
+                                  post.authorAvatarUrl
+                                    ? '<img src="' + String(post.authorAvatarUrl).replaceAll('"', '&quot;') + '" alt="Avatar" />'
+                                    : '<span>' + String(post.authorName || "?").charAt(0).toUpperCase() + '</span>'
+                                }
+                              </div>
+                              <div>
+                                <div class="post-card__name">${String(post.authorName).replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</div>
+                                <div class="muted">${String(post.authorRole).toUpperCase()} • ${new Date(post.createdAt).toLocaleString()}</div>
+                              </div>
+                            </div>
+                            <span class="badge">${String(post.authorRole).toLowerCase()}</span>
+                          </div>
+                          <div class="post-card__content">${String(post.content).replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br />")}</div>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </section>
+            `
+          : ""
+      }
+    `,
+  })
+%>
+

@@ -1,0 +1,59 @@
+<%-
+  include("layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <div class="row row--between">
+          <div>
+            <h1>News feed</h1>
+            <p class="muted">Share updates, celebrate wins, and keep the community informed.</p>
+          </div>
+        </div>
+
+        <div class="card card--pad">
+          <form method="post" action="/feed" class="form">
+            ${error ? `<div class="alert">${error}</div>` : ""}
+            <div class="field">
+              <span>What would you like to share?</span>
+              <textarea name="content" rows="5" required placeholder="Share company news, internship tips, or community updates...">${form?.content ? String(form.content).replaceAll("<", "&lt;").replaceAll(">", "&gt;") : ""}</textarea>
+            </div>
+            <button class="button" type="submit">Publish post</button>
+          </form>
+        </div>
+
+        <div class="page__section">
+          ${
+            posts.length
+              ? posts
+                  .map(
+                    (post) => `
+                      <div class="card post-card">
+                        <div class="post-card__head">
+                          <div class="post-card__author">
+                            <div class="post-card__avatar">
+                              ${
+                                post.authorAvatarUrl
+                                  ? '<img src="' + String(post.authorAvatarUrl).replaceAll('"', '&quot;') + '" alt="Avatar" />'
+                                  : '<span>' + String(post.authorName || "?").charAt(0).toUpperCase() + '</span>'
+                              }
+                            </div>
+                            <div>
+                              <div class="post-card__name">${String(post.authorName).replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</div>
+                              <div class="muted">${String(post.authorRole).toUpperCase()} • ${new Date(post.createdAt).toLocaleString()}</div>
+                            </div>
+                          </div>
+                          <span class="badge">${String(post.authorRole).toLowerCase()}</span>
+                        </div>
+                        <div class="post-card__content">${String(post.content).replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br />")}</div>
+                      </div>
+                    `
+                  )
+                  .join("")
+              : `<div class="muted">No posts yet. Publish the first update to build momentum.</div>`
+          }
+        </div>
+      </section>
+    `,
+  })
+%>

@@ -1,0 +1,21 @@
+node_modules/
+.env
+*.log
+.vscode/
+
+# --- TERRAFORM ---
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/crash.log
+terraform/crash.*.log
+terraform/*.tfvars
+terraform/*.tfvars.json
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+terraform/.terraform.lock.hcl
+
+# --- KỊCH BẢN KHỞI TẠO (CHỨA MẬT KHẨU) ---
+terraform/init.sh

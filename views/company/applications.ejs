@@ -1,0 +1,40 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <div class="row row--between">
+          <div>
+            <h1>Applications</h1>
+            <p class="muted">${job.title}</p>
+          </div>
+          <a class="button button--ghost" href="/company/dashboard">Back</a>
+        </div>
+
+        <div class="apps">
+          ${
+            applications.length
+              ? applications
+                  .map(
+                    (a) => `
+                      <div class="card card--pad">
+                        <div class="row row--between">
+                          <strong>${a.fullName}</strong>
+                          <span class="muted">${new Date(a.createdAt).toLocaleString()}</span>
+                        </div>
+                        <div class="muted">${a.email}</div>
+                        ${a.resumeUrl ? `<div style="margin-top: 8px;"><a href="${a.resumeUrl}" target="_blank" rel="noreferrer">Resume</a></div>` : ""}
+                        ${a.message ? `<p class="pre" style="margin-top: 8px;">${a.message}</p>` : ""}
+                      </div>
+                    `
+                  )
+                  .join("")
+              : `<div class="muted">No applications yet.</div>`
+          }
+        </div>
+      </section>
+    `,
+  })
+%>
+

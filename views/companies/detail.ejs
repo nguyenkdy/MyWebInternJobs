@@ -1,0 +1,68 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="profile">
+        <div class="profileHeader">
+          <div class="profileHeader__cover" style="${company.coverPhoto ? `background-image:url('${String(company.coverPhoto).replaceAll("'", "%27")}')` : ""}"></div>
+          <div class="profileHeader__inner">
+            <div class="profileHeader__avatar">
+              ${
+                company.avatar
+                  ? `<img src="${company.avatar}" alt="Company avatar" />`
+                  : `<div class="profileHeader__avatarFallback">${(company.companyName || company.email || "?").slice(0, 1).toUpperCase()}</div>`
+              }
+            </div>
+            <div class="profileHeader__meta">
+              <h1 class="profileHeader__name">${company.companyName || company.email}</h1>
+              <div class="muted">
+                ${company.companyWebsite ? `<a href="${company.companyWebsite}" target="_blank" rel="noreferrer">${company.companyWebsite}</a>` : "No website"}
+              </div>
+            </div>
+            <div class="profileHeader__actions">
+              ${
+                currentUser?.role === "company"
+                  ? `<a class="button" href="/company/profile/edit">Edit company profile</a>`
+                  : ""
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="profileGrid">
+          <div class="card card--pad" style="grid-column: 1 / -1;">
+            <h2>About</h2>
+            <p class="pre">${company.companyAbout ? company.companyAbout : "No company bio yet."}</p>
+          </div>
+
+          <div class="card card--pad" style="grid-column: 1 / -1;">
+            <h2>Active jobs</h2>
+            <div class="jobs" style="margin-top: 10px;">
+              ${
+                jobs.length
+                  ? jobs
+                      .map(
+                        (j) => `
+                          <a class="job job--static" href="/jobs/${j._id}">
+                            <div class="job__top">
+                              <div class="job__title">${j.title}</div>
+                              <span class="badge">${j.type}</span>
+                            </div>
+                            <div class="job__meta">
+                              <span>${j.location || "Remote / Flexible"}</span>
+                            </div>
+                          </a>
+                        `
+                      )
+                      .join("")
+                  : `<div class="muted">No active jobs.</div>`
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+    `,
+  })
+%>
+

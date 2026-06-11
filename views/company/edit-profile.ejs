@@ -1,0 +1,61 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <h1>Edit Company Profile</h1>
+        <p class="muted">Upload your avatar/cover from your AWS S3 bucket.</p>
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form class="form" method="post" action="/company/profile" enctype="multipart/form-data">
+          <label class="field">
+            <span>Company Name</span>
+            <input name="companyName" required value="${form?.companyName ? String(form.companyName).replaceAll('"', "&quot;") : ""}" />
+          </label>
+
+          <label class="field">
+            <span>Profile Picture (Avatar)</span>
+            <input name="avatar" type="file" accept="image/*" ${form?.avatar ? "" : "required"} />
+            ${
+              form?.avatar
+                ? `<div style="display:flex; align-items:center; gap:12px;">
+                    <img src="${String(form.avatar).replaceAll('"', "&quot;")}" alt="Avatar preview" style="width:64px; height:64px; border-radius:16px; object-fit:cover; border:1px solid rgba(255,255,255,0.14);" />
+                    <div class="muted">Uploaded to AWS S3</div>
+                  </div>`
+                : `<div class="muted">Upload an avatar image (required)</div>`
+            }
+          </label>
+
+          <label class="field">
+            <span>Cover Photo</span>
+            <input name="coverPhoto" type="file" accept="image/*" />
+            ${
+              form?.coverPhoto
+                ? `<div style="display:flex; align-items:center; gap:12px;">
+                    <img src="${String(form.coverPhoto).replaceAll('"', "&quot;")}" alt="Cover preview" style="width:140px; height:56px; object-fit:cover; border:1px solid rgba(255,255,255,0.14); border-radius:12px;" />
+                    <div class="muted">Optional</div>
+                  </div>`
+                : `<div class="muted">Optional</div>`
+            }
+          </label>
+
+          <label class="field">
+            <span>About Company</span>
+            <textarea name="companyAbout" rows="5" placeholder="What does your company do? What internships do you offer?">${form?.companyAbout ? String(form.companyAbout) : ""}</textarea>
+          </label>
+
+          <label class="field">
+            <span>Website (optional)</span>
+            <input name="companyWebsite" placeholder="https://example.com" value="${form?.companyWebsite ? String(form.companyWebsite).replaceAll('"', "&quot;") : ""}" />
+          </label>
+
+          <div class="row row--gap">
+            <button class="button" type="submit">Save Profile</button>
+            <a class="button button--ghost" href="/company/profile">Cancel</a>
+          </div>
+        </form>
+      </section>
+    `,
+  })
+%>
+

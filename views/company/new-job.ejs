@@ -1,0 +1,48 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <h1>Post a job</h1>
+        <p class="muted">This will appear on the Intern job board.</p>
+        ${error ? `<div class="alert">${error}</div>` : ""}
+        <form class="form" method="post" action="/company/jobs">
+          <label class="field">
+            <span>Job title</span>
+            <input name="title" required value="${form?.title ? String(form.title).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Location</span>
+            <input name="location" placeholder="Ho Chi Minh City / Remote" value="${form?.location ? String(form.location).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <label class="field">
+            <span>Type</span>
+            <select class="input" name="type">
+              <option value="internship" ${form?.type === "internship" || !form?.type ? "selected" : ""}>Internship</option>
+              <option value="part-time" ${form?.type === "part-time" ? "selected" : ""}>Part-time</option>
+              <option value="full-time" ${form?.type === "full-time" ? "selected" : ""}>Full-time</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Description</span>
+            <textarea name="description" rows="6" required placeholder="What will the intern do?">${form?.description ? String(form.description) : ""}</textarea>
+          </label>
+          <label class="field">
+            <span>Requirements (optional)</span>
+            <textarea name="requirements" rows="4" placeholder="Skills, tech stack, etc.">${form?.requirements ? String(form.requirements) : ""}</textarea>
+          </label>
+          <label class="field">
+            <span>Salary range (optional)</span>
+            <input name="salaryRange" placeholder="$200 - $400 / month" value="${form?.salaryRange ? String(form.salaryRange).replaceAll('"', "&quot;") : ""}" />
+          </label>
+          <div class="row row--gap">
+            <button class="button" type="submit">Publish</button>
+            <a class="button button--ghost" href="/company/dashboard">Cancel</a>
+          </div>
+        </form>
+      </section>
+    `,
+  })
+%>
+

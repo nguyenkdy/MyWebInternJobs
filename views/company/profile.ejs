@@ -1,0 +1,39 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="profile">
+        <div class="profileHeader">
+          <div class="profileHeader__cover" style="${user.coverPhoto ? `background-image:url('${String(user.coverPhoto).replaceAll("'", "%27")}')` : ""}"></div>
+          <div class="profileHeader__inner">
+            <div class="profileHeader__avatar">
+              ${
+                user.avatar
+                  ? `<img src="${user.avatar}" alt="Avatar" />`
+                  : `<div class="profileHeader__avatarFallback">${(user.companyName || user.email || "?").slice(0, 1).toUpperCase()}</div>`
+              }
+            </div>
+            <div class="profileHeader__meta">
+              <h1 class="profileHeader__name">${user.companyName || user.email}</h1>
+              <div class="muted">
+                ${user.companyWebsite ? `<a href="${user.companyWebsite}" target="_blank" rel="noreferrer">${user.companyWebsite}</a>` : ""}
+              </div>
+            </div>
+            <div class="profileHeader__actions">
+              <a class="button" href="/company/profile/edit">Edit profile</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="profileGrid">
+          <div class="card card--pad" style="grid-column: 1 / -1;">
+            <h2>About</h2>
+            <p class="pre">${user.companyAbout ? user.companyAbout : "Tell interns about your company and the kind of interns you’re looking for."}</p>
+          </div>
+        </div>
+      </section>
+    `,
+  })
+%>
+

@@ -1,0 +1,66 @@
+<%-
+  include("../layout", {
+    title,
+    currentUser,
+    body: `
+      <section class="page">
+        <div class="jobDetail">
+          <div class="jobDetail__header">
+            <div>
+              <h1>${job.title}</h1>
+              <div class="muted">
+                <a href="/companies/${job.companyUserId}" style="color: inherit; text-decoration: none;">${job.companyName}</a>
+                • ${job.location || "Remote / Flexible"} • <span class="badge">${job.type}</span>
+              </div>
+            </div>
+            <a class="button button--ghost" href="/jobs">Back</a>
+          </div>
+
+          <div class="card card--pad">
+            <h2>Description</h2>
+            <p class="pre">${job.description}</p>
+            ${job.requirements ? `<h2>Requirements</h2><p class="pre">${job.requirements}</p>` : ""}
+            ${job.salaryRange ? `<h2>Salary</h2><p class="pre">${job.salaryRange}</p>` : ""}
+          </div>
+
+          ${
+            currentUser?.role !== "intern"
+              ? `
+                <div class="muted">
+                  To apply, please <a href="/auth/login">log in</a> as an intern.
+                </div>
+              `
+              : alreadyApplied
+                ? `<div class="alert alert--ok">You already applied to this job.</div>`
+                : `
+                  <div class="card card--pad">
+                    <h2>Apply</h2>
+                    ${error ? `<div class="alert">${error}</div>` : ""}
+                    <form class="form" method="post" action="/jobs/${job._id}/apply">
+                      <label class="field">
+                        <span>Full name</span>
+                        <input name="fullName" required value="${form?.fullName ? String(form.fullName).replaceAll('"', "&quot;") : (currentUser.fullName ? String(currentUser.fullName).replaceAll('"', "&quot;") : "")}" />
+                      </label>
+                      <label class="field">
+                        <span>Email</span>
+                        <input type="email" name="email" required value="${form?.email ? String(form.email).replaceAll('"', "&quot;") : String(currentUser.email).replaceAll('"', "&quot;")}" />
+                      </label>
+                      <label class="field">
+                        <span>Resume URL (optional)</span>
+                        <input name="resumeUrl" placeholder="https://..." value="${form?.resumeUrl ? String(form.resumeUrl).replaceAll('"', "&quot;") : ""}" />
+                      </label>
+                      <label class="field">
+                        <span>Message (optional)</span>
+                        <textarea name="message" rows="4" placeholder="Short intro...">${form?.message ? String(form.message) : ""}</textarea>
+                      </label>
+                      <button class="button" type="submit">Submit application</button>
+                    </form>
+                  </div>
+                `
+          }
+        </div>
+      </section>
+    `,
+  })
+%>
+
